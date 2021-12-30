@@ -38,6 +38,11 @@ byte brightnessIndex = 0; //initial brightness, index of brightnessLevels array
 const byte brightnessLevels[] = { 10, 30, 140, 230 };
 const byte numBrightnessLevels = SIZE( brightnessLevels );
 
+// Speed vars
+byte pulseSpeedIndex = 0;
+const byte pulseSpeeds[] = {0.5, 1, 1.5, 2};
+const byte numPulseSpeeds = SIZE(pulseSpeeds);
+
 //Strip definitions
 const uint16_t stripLength = 104;
 const uint8_t stripType = NEO_RGB + NEO_KHZ800;
@@ -220,31 +225,6 @@ uint32_t tempTwinklePallet[2]; //used for twinkle effect, we are only twinkling 
 //class DotStarPatterns : public Adafruit_DotStar
 class PixelStripPatterns : public PixelStrip
 {
-  //Define some colors we'll use frequently
-  const uint32_t white =    this->Color(255, 255, 255);
-  const uint32_t UCLAGold = this->Color(254, 187, 54);
-  const uint32_t UCLABlue = this->Color(83, 104, 149);
-  const uint32_t off =      this->Color( 0, 0, 0 );
-  const uint32_t red =      this->Color(255, 0, 0);
-  const uint32_t orange =   this->Color(255, 43, 0);
-  const uint32_t ltOrange = this->Color(255, 143, 0);
-  const uint32_t yellow =   this->Color(255, 255, 0);
-  const uint32_t ltYellow = this->Color(255, 255, 100);
-  const uint32_t green =    this->Color(0, 128, 0);
-  const uint32_t blue =     this->Color(0, 0, 255);
-  const uint32_t indigo =   this->Color( 75, 0, 130);
-  const uint32_t violet =   this->Color(238, 130, 238);
-  const uint32_t purple =   this->Color(123, 7, 197);
-  const uint32_t pink =     this->Color(225, 0, 127);
-
-  const uint32_t pastelRainbow = this->Color(130, 185, 226); //178,231,254,
-  const uint32_t pastelRainbow1 = this->Color(110, 46, 145); //purple
-  const uint32_t pastelRainbow2 = this->Color(54, 174, 218); //teal
-  const uint32_t pastelRainbow3 = this->Color(120, 212, 96); //green
-  const uint32_t pastelRainbow4 = this->Color(255, 254, 188); //yellow
-  const uint32_t pastelRainbow5 = this->Color(236, 116, 70); //orange
-  const uint32_t pastelRainbow6 = this->Color(229, 61, 84); //pink red
-
   //define pallet array, contains 32bit representations of all colors used in patterns
   uint32_t pallet[9] = { off, white, UCLAGold, UCLABlue, blue, yellow, red, green, purple };
   //                   { -0-, --1--, ---2----, ----3---, -4--, ---5--, -6-, --7--, --8-- }
@@ -262,6 +242,65 @@ class PixelStripPatterns : public PixelStrip
   uint32_t firePallet2[3] = { purple, pink, white };
   
   public:
+    //-------------COLORS-----------------------------------------------COLORS
+    //Define some colors we'll use frequently
+    const uint32_t white =    this->Color(255, 255, 255);
+    const uint32_t UCLAGold = this->Color(254, 187, 54);
+    const uint32_t UCLABlue = this->Color(83, 104, 149);
+    const uint32_t off =      this->Color( 0, 0, 0 );
+    const uint32_t red =      this->Color(255, 0, 0);
+    const uint32_t orange =   this->Color(255, 43, 0);
+    const uint32_t ltOrange = this->Color(255, 143, 0);
+    const uint32_t yellow =   this->Color(255, 255, 0);
+    const uint32_t ltYellow = this->Color(255, 255, 100);
+    const uint32_t green =    this->Color(0, 128, 0);
+    const uint32_t blue =     this->Color(0, 0, 255);
+    const uint32_t indigo =   this->Color( 75, 0, 130);
+    const uint32_t violet =   this->Color(238, 130, 238);
+    const uint32_t purple =   this->Color(123, 7, 197);
+    const uint32_t pink =     this->Color(225, 0, 127);
+  
+    const uint32_t pastelRainbow = this->Color(130, 185, 226); //178,231,254,
+    const uint32_t pastelRainbow1 = this->Color(110, 46, 145); //purple
+    const uint32_t pastelRainbow2 = this->Color(54, 174, 218); //teal
+    const uint32_t pastelRainbow3 = this->Color(120, 212, 96); //green
+    const uint32_t pastelRainbow4 = this->Color(255, 254, 188); //yellow
+    const uint32_t pastelRainbow5 = this->Color(236, 116, 70); //orange
+    const uint32_t pastelRainbow6 = this->Color(229, 61, 84); //pink red
+    //-------------COLORS-----------------------------------------------COLORS
+
+    int col1[5] = {0, 1, 2, 3, 4};
+    int col2[7] = {11, 10, 9, 8, 7, 6, 5};
+    int col3[7] = {12, 13, 14, 15, 16, 17, 18};
+    int col4[9] = {27, 26, 25, 24, 23, 22, 21, 20, 19};
+    int col5[11] = {28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38};
+    int col6[13] = {51, 50, 49, 48, 47, 46, 45, 44, 43, 42, 41, 40, 39};
+    int col7[13] = {52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64};
+    int col8[11] = {75, 74, 73, 72, 71, 70, 69, 68, 67, 66, 65};
+    int col9[9] = {76, 77, 78, 79, 80, 81, 82, 83, 84};
+    int col10[7] = {91, 90, 89, 88, 87, 86, 85};
+    int col11[7] = {92, 93, 94, 95, 96, 97, 98};
+    int col12[5] = {103, 102, 101, 100, 99};
+    int* columns[12] = {col1, col2, col3, col4, col5, col6, col7, col8, col9, col10, col11, col12};
+  
+
+    /*int columns[][] =
+    {
+      {0, 1, 2, 3, 4},
+      {11, 10, 9, 8, 7, 6, 5},
+      {12, 13, 14, 15, 16, 17, 18},
+      {27, 26, 25, 24, 23, 22, 21, 20, 19},
+      {28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38},
+      {51, 50, 49, 48, 47, 46, 45, 44, 43, 42, 41, 40, 39},
+      {52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64},
+      {75, 74, 73, 72, 71, 70, 69, 68, 67, 66, 65},
+      {76, 77, 78, 79, 80, 81, 82, 83, 84},
+      {91, 90, 89, 88, 87, 86, 85},
+      {92, 93, 94, 95, 96, 97, 98},
+      {103, 102, 101, 100, 99}
+    }*/
+    int columnsSize[12] = {5, 7, 7, 9, 11, 13, 13, 11, 9, 7, 7, 5};
+    
     // Member variables
     pattern ActivePattern; // Running pattern
     direction Direction; // direction to run the pattern
@@ -272,6 +311,9 @@ class PixelStripPatterns : public PixelStrip
     uint32_t Color1, Color2; // What colors are in use
     uint16_t TotalSteps; // Total number of steps in the pattern
     uint16_t Index; // current step within the pattern
+
+    bool ReverseWhenComplete;
+    unsigned long PulseSpeed = pulseSpeeds[pulseSpeedIndex];
 
     void (*OnComplete)(); // Callback on completion of pattern
 
@@ -508,14 +550,78 @@ class PixelStripPatterns : public PixelStrip
       this->shooterSeg( rowHalfSegments, pallet, 5, 0, true, 10, 1, 1, 3, 2, true, false, 10, 170); //rainbow
     }
 
-    void Pattern5Update()
+    // Initialize Pattern 5 (Rainbow Pulse).
+    void Pattern5(uint8_t interval, direction dir = FORWARD)
     {
-      this->shooterSeg( rowHalfSegments, pallet, 5, 0, true, 8, 1, 3, 3, 4, true, false, 10, 150);
+      ActivePattern = PATTERN_5;
+      Interval = interval;
+      TotalSteps = 208;
+      Index = 0;
+      Direction = dir;
+      ReverseWhenComplete = false;
     }
 
+    // Update Pattern 5 (Rainbow Pulse).
+    void Pattern5Update()
+    {
+      for (int i = 0; i < 12; i++)
+      {
+        int* col = columns[i];
+
+        for (int j = 0; j < columnsSize[i]; j++)
+        {
+          uint32_t color = Wheel(((i * 256 / numPixels()) + Index) & 255);
+          int pixel = col[j];
+
+          if (j == Index || j == Index + 1) {
+            setPixelColor(pixel, color);
+          } else {
+            setPixelColor(pixel, DimColor(DimColor(color)));
+          }
+          delay(PulseSpeed);
+        }
+      }
+      show();
+      Increment();
+    }
+
+    // Initialize Pattern 6 (Photon).
+    void Pattern6(uint8_t interval, direction dir = FORWARD)
+    {
+      ActivePattern = PATTERN_5;
+      Interval = interval;
+      TotalSteps = 13;
+      Index = 0;
+      Direction = dir;
+      ReverseWhenComplete = false;
+      Color1 = yellow;
+    }
+
+    // Update Pattern 6 (Photon).
     void Pattern6Update()
     {
-      this->shooterSeg( colSegments, pallet, 5, 0, true, 8, 1, 3, 3, 4, false, false, 10, 170);
+      for (int i = 0; i < 12; i++)
+      {
+        int* col = columns[i];
+
+        for (int j = 0; j < columnsSize[i]; j++)
+        {
+          int pixel = col[j];
+
+          if (pixel == Index) {
+            setPixelColor(pixel, Color1);
+          } else if (pixel == Index + 1) {
+            setPixelColor(pixel, DimColor(Color1));
+          } else if (pixel == Index + 2) {
+            setPixelColor(pixel, DimColor(DimColor(Color1)));
+          } else {
+            setPixelColor(pixel, 0);
+          }
+          delay(PulseSpeed);
+        }
+      }
+      show();
+      Increment();
     }
 
     void Pattern7Update()
@@ -563,9 +669,43 @@ class PixelStripPatterns : public PixelStrip
         }
     }
 
+    // Initialize Pattern13.
+    void Pattern13(uint8_t interval, direction dir = FORWARD)
+    {
+      ActivePattern = PATTERN_13;
+      Interval = interval;
+      TotalSteps = 20;
+      Index = 0;
+      Direction = dir;
+      ReverseWhenComplete = false;
+      Color1 = yellow;
+
+      fill(0, 0, numPixels());
+    }
+
     void Pattern13Update()
     {
-      this->sonarWavesRand( colSegments, 6, 0, 4, 8, false, false, true, true, 120, 30);
+      uint8_t onPixels[72] =
+      {
+        0, 1, 2, 3,
+        5, 6, 7, 8, 9,
+        12, 13, 14, 15, 16,
+        19, 20, 21, 22, 23, 24,
+        28, 29, 30, 31, 32, 33, 34,
+        41, 42, 43, 44, 45, 46, 47,
+        56, 57, 58, 59, 60, 61, 62,
+        69, 70, 71, 72, 73, 74, 75,
+        79, 80, 81, 82, 83, 84,
+        87, 88, 89, 90, 91,
+        94, 95, 96, 97, 98,
+        100, 101, 102, 103
+      };
+
+      for (int i = 0; i < sizeof onPixels / sizeof onPixels[0]; i++)
+      {
+        setPixelColor(onPixels[i], Color1);
+      }
+      show();
     }
 
     void Pattern14Update()
@@ -735,11 +875,39 @@ class PixelStripPatterns : public PixelStrip
       this->simpleStreamerRand( 5, 0, 7, 0, 0, true, 160, 10);
     }
 
+    // Initialize Pattern 33 (Pulse).
+    void Pattern33(uint8_t interval, direction dir = FORWARD)
+    {
+      ActivePattern = PATTERN_33;
+      Interval = interval;
+      TotalSteps = 13;
+      Index = 0;
+      Direction = dir;
+      ReverseWhenComplete = false;
+      Color1 = yellow;
+    }
+
+    // Update Pattern 33 (Pulse).
     void Pattern33Update()
     {
-      this->setRainbowOffsetCycle(40, true);
-      this->runRainbowOffsetCycle(true);
-      this->patternSweepRand( 12, white, -1, 0, 0, false, 0, 1, 10, 140 );
+      for (int i = 0; i < 12; i++)
+      {
+        int* col = columns[i];
+
+        for (int j = 0; j < columnsSize[i]; j++)
+        {
+          int pixel = col[j];
+
+          if (j == Index || j == Index + 1) {
+            setPixelColor(pixel, Color1);
+          } else {
+            setPixelColor(pixel, DimColor(DimColor(Color1)));
+          }
+          delay(PulseSpeed);
+        }
+      }
+      show();
+      Increment();
     }
 
     void Pattern34Update()
@@ -855,11 +1023,6 @@ void StripComplete();
 // Define DotStarPatterns for the strip.
 PixelStripPatterns strip(stripLength, DATAPIN, CLOCKPIN, stripType, &StripComplete);
 
-void nextEffect() {
-  patternIndex = (patternIndex + 1) % NUM_PATTERNS;
-  strip.ActivePattern = (pattern)patternIndex;
-}
-
 //triggered by button 3, sets the strip brightness to the next
 //also stores the brighness index in eeprom
 //brightness level in the brightnessLevels array (wrapping to the start if needed)
@@ -867,6 +1030,12 @@ void brightnessAdjust() {
   brightnessIndex = (brightnessIndex + 1) % numBrightnessLevels;
   strip.setBrightness( brightnessLevels[brightnessIndex] );
   sendResponse("Changed brightness.");
+}
+
+void pulseSpeedAdjust() {
+  pulseSpeedIndex = (pulseSpeedIndex + 1) % numPulseSpeeds;
+  strip.PulseSpeed = pulseSpeeds[pulseSpeedIndex];
+  sendResponse("Changed pulse speed.");
 }
 
 //increments the effect index (wrapping if needed)
@@ -975,156 +1144,251 @@ void connect_callback(uint16_t conn_handle)
 uint8_t mode = 'a';
 char const* response;
 
+bool adjustingColor = false;
+bool adjustingMainColor = false;
+
 //---------MAIN LOOP-------------------------------------------MAIN LOOP
 void loop() {  
   if ( Bluefruit.connected() && bleuart.notifyEnabled() )
   {
     int command = bleuart.read();
-  
-    switch (command) {
-      case 'n': { // Next effect
-        nextEffect();
-        break;
-      }
-      case 'x': { // Brightness
-        brightnessAdjust();
-        break;
-      }
-      case 'a': { // Change mode to a
-        mode = 'a';
-        sendResponse("Changed to mode A.");
-        break;
-      }
-      case 'b': { // Change mode to b
-        mode = 'b';
-        sendResponse("Changed to mode B.");
-        break;
-      }
-      case 'c': { // Change mode to c
-        mode = 'c';
-        sendResponse("Changed to mode C.");
-        break;
-      }
-      case 'd': { // Change mode to d
-        mode = 'd';
-        sendResponse("Changed to mode D.");
-        break;
-      }
-      case 'e': { // Change mode to e
-        mode = 'e';
-        sendResponse("Changed to mode E.");
-        break;
-      }
-      case '0': {
-        uint8_t n;
-        switch (mode) {
-          case 'a': { n = 0; sendResponse("Changed to pattern 0."); break; }
-          case 'b': { n = 10; sendResponse("Changed to pattern 10."); break; }
-          case 'c': { n = 20; sendResponse("Changed to pattern 20."); break; }
-          case 'd': { n = 30; sendResponse("Changed to pattern 30."); break; }
-          case 'e': { n = 40; sendResponse("Changed to pattern 40."); break; }
+
+    if (adjustingColor) {
+      switch (command) {
+        case 'r': { // Set color red
+          if (adjustingMainColor) {
+            strip.Color1 = strip.red;
+          } else {
+            strip.Color2 = strip.red;
+          }
+          adjustingColor = false;
+          sendResponse("Set color red.");
+          break;
         }
-        strip.ActivePattern = (pattern)n;
-        break;
-      }
-      case '1': {
-        uint8_t n;
-        switch (mode) {
-          case 'a': { n = 1; sendResponse("Changed to pattern 1."); break; }
-          case 'b': { n = 11; sendResponse("Changed to pattern 11."); break; }
-          case 'c': { n = 21; sendResponse("Changed to pattern 21."); break; }
-          case 'd': { n = 31; sendResponse("Changed to pattern 31."); break; }
+        case 'o': { // Set color orange
+          if (adjustingMainColor) {
+            strip.Color1 = strip.orange;
+          } else {
+            strip.Color2 = strip.orange;
+          }
+          adjustingColor = false;
+          sendResponse("Set color orange.");
+          break;
         }
-        strip.ActivePattern = (pattern)n;
-        break;
-      }
-      case '2': {
-        uint8_t n;
-        switch (mode) {
-          case 'a': { n = 2; sendResponse("Changed to pattern 2."); break; }
-          case 'b': { n = 12; sendResponse("Changed to pattern 12."); break; }
-          case 'c': { n = 22; sendResponse("Changed to pattern 22."); break; }
-          case 'd': { n = 32; sendResponse("Changed to pattern 32."); break; }
+        case 'y': { // Set color yellow
+          if (adjustingMainColor) {
+            strip.Color1 = strip.yellow;
+          } else {
+            strip.Color2 = strip.yellow;
+          }
+          adjustingColor = false;
+          sendResponse("Set color yellow.");
+          break;
         }
-        strip.ActivePattern = (pattern)n;
-        break;
-      }
-      case '3': {
-        uint8_t n;
-        switch (mode) {
-          case 'a': { n = 3; sendResponse("Changed to pattern 3."); break; }
-          case 'b': { n = 13; sendResponse("Changed to pattern 13."); break; }
-          case 'c': { n = 23; sendResponse("Changed to pattern 23."); break; }
-          case 'd': { n = 33; sendResponse("Changed to pattern 33."); break; }
+        case 'g': { // Set color green
+          if (adjustingMainColor) {
+            strip.Color1 = strip.green;
+          } else {
+            strip.Color2 = strip.green;
+          }
+          adjustingColor = false;
+          sendResponse("Set color green.");
+          break;
         }
-        strip.ActivePattern = (pattern)n;
-        break;
-      }
-      case '4': {
-        uint8_t n;
-        switch (mode) {
-          case 'a': { n = 4; sendResponse("Changed to pattern 4."); break; }
-          case 'b': { n = 14; sendResponse("Changed to pattern 14."); break; }
-          case 'c': { n = 24; sendResponse("Changed to pattern 24."); break; }
-          case 'd': { n = 34; sendResponse("Changed to pattern 34."); break; }
+        case 'b': { // Set color blue
+          if (adjustingMainColor) {
+            strip.Color1 = strip.blue;
+          } else {
+            strip.Color2 = strip.blue;
+          }
+          adjustingColor = false;
+          sendResponse("Set color blue.");
+          break;
         }
-        strip.ActivePattern = (pattern)n;
-        break;
-      }
-      case '5': {
-        uint8_t n;
-        switch (mode) {
-          case 'a': { n = 5; sendResponse("Changed to pattern 5."); break; }
-          case 'b': { n = 15; sendResponse("Changed to pattern 15."); break; }
-          case 'c': { n = 25; sendResponse("Changed to pattern 25."); break; }
-          case 'd': { n = 35; sendResponse("Changed to pattern 35."); break; }
+        case 'i': { // Set color indigo
+          if (adjustingMainColor) {
+            strip.Color1 = strip.indigo;
+          } else {
+            strip.Color2 = strip.indigo;
+          }
+          adjustingColor = false;
+          sendResponse("Set color indigo.");
+          break;
         }
-        strip.ActivePattern = (pattern)n;
-        break;
-      }
-      case '6': {
-        uint8_t n;
-        switch (mode) {
-          case 'a': { n = 6; sendResponse("Changed to pattern 6."); break; }
-          case 'b': { n = 16; sendResponse("Changed to pattern 16."); break; }
-          case 'c': { n = 26; sendResponse("Changed to pattern 26."); break; }
-          case 'd': { n = 36; sendResponse("Changed to pattern 36."); break; }
+        case 'v': { // Set color violet
+          if (adjustingMainColor) {
+            strip.Color1 = strip.violet;
+          } else {
+            strip.Color2 = strip.violet;
+          }
+          adjustingColor = false;
+          sendResponse("Set color violet.");
+          break;
         }
-        strip.ActivePattern = (pattern)n;
-        break;
-      }
-      case '7': {
-        uint8_t n;
-        switch (mode) {
-          case 'a': { n = 7; sendResponse("Changed to pattern 7."); break; }
-          case 'b': { n = 17; sendResponse("Changed to pattern 17."); break; }
-          case 'c': { n = 27; sendResponse("Changed to pattern 27."); break; }
-          case 'd': { n = 37; sendResponse("Changed to pattern 37."); break; }
+        case 'x': { // Cancel color change
+          adjustingColor = false;
+          sendResponse("Cancelled.");
+          break;
         }
-        strip.ActivePattern = (pattern)n;
-        break;
       }
-      case '8': {
-        uint8_t n;
-        switch (mode) {
-          case 'a': { n = 8; sendResponse("Changed to pattern 8."); break; }
-          case 'b': { n = 18; sendResponse("Changed to pattern 18."); break; }
-          case 'c': { n = 28; sendResponse("Changed to pattern 28."); break; }
-          case 'd': { n = 38; sendResponse("Changed to pattern 38."); break; }
+    } else {
+      switch (command) {
+        case 'x': { // Brightness
+          brightnessAdjust();
+          break;
         }
-        strip.ActivePattern = (pattern)n;
-        break;
-      }
-      case '9': {
-        uint8_t n;
-        switch (mode) {
-          case 'a': { n = 9; sendResponse("Changed to pattern 9."); break; }
-          case 'b': { n = 19; sendResponse("Changed to pattern 19."); break; }
-          case 'c': { n = 29; sendResponse("Changed to pattern 29."); break; }
-          case 'd': { n = 39; sendResponse("Changed to pattern 39."); break; }
+        case 'p': { // Pulse speed
+          pulseSpeedAdjust();
+          break;
         }
-        strip.ActivePattern = (pattern)n;
-        break;
+        case 'm': { // Main color (Color1)
+          adjustingColor = true;
+          adjustingMainColor = true;
+          sendResponse("Adj Color1: ROYGBIV.");
+          break;
+        }
+        case 's': { // Secondary color (Color2)
+          adjustingColor = true;
+          adjustingMainColor = false;
+          sendResponse("Adj Color2: ROYGBIV.");
+          break;
+        }
+        case 'a': { // Change mode to a
+          mode = 'a';
+          sendResponse("Changed to mode A.");
+          break;
+        }
+        case 'b': { // Change mode to b
+          mode = 'b';
+          sendResponse("Changed to mode B.");
+          break;
+        }
+        case 'c': { // Change mode to c
+          mode = 'c';
+          sendResponse("Changed to mode C.");
+          break;
+        }
+        case 'd': { // Change mode to d
+          mode = 'd';
+          sendResponse("Changed to mode D.");
+          break;
+        }
+        case 'e': { // Change mode to e
+          mode = 'e';
+          sendResponse("Changed to mode E.");
+          break;
+        }
+        case '0': {
+          uint8_t n;
+          switch (mode) {
+            case 'a': { n = 0; sendResponse("Changed to pattern 0."); break; }
+            case 'b': { n = 10; sendResponse("Changed to pattern 10."); break; }
+            case 'c': { n = 20; sendResponse("Changed to pattern 20."); break; }
+            case 'd': { n = 30; sendResponse("Changed to pattern 30."); break; }
+            case 'e': { n = 40; sendResponse("Changed to pattern 40."); break; }
+          }
+          strip.ActivePattern = (pattern)n;
+          break;
+        }
+        case '1': {
+          uint8_t n;
+          switch (mode) {
+            case 'a': { n = 1; sendResponse("Changed to pattern 1."); break; }
+            case 'b': { n = 11; sendResponse("Changed to pattern 11."); break; }
+            case 'c': { n = 21; sendResponse("Changed to pattern 21."); break; }
+            case 'd': { n = 31; sendResponse("Changed to pattern 31."); break; }
+          }
+          strip.ActivePattern = (pattern)n;
+          break;
+        }
+        case '2': {
+          uint8_t n;
+          switch (mode) {
+            case 'a': { n = 2; sendResponse("Changed to pattern 2."); break; }
+            case 'b': { n = 12; sendResponse("Changed to pattern 12."); break; }
+            case 'c': { n = 22; sendResponse("Changed to pattern 22."); break; }
+            case 'd': { n = 32; sendResponse("Changed to pattern 32."); break; }
+          }
+          strip.ActivePattern = (pattern)n;
+          break;
+        }
+        case '3': {
+          uint8_t n;
+          switch (mode) {
+            case 'a': { n = 3; sendResponse("Changed to pattern 3."); break; }
+            case 'b': { n = 13; strip.Pattern13(3); sendResponse("Changed to pattern 13."); break; }
+            case 'c': { n = 23; sendResponse("Changed to pattern 23."); break; }
+            case 'd': { n = 33; strip.Pattern33(3); sendResponse("Changed to pattern 33."); break; }
+          }
+          strip.ActivePattern = (pattern)n;
+          break;
+        }
+        case '4': {
+          uint8_t n;
+          switch (mode) {
+            case 'a': { n = 4; sendResponse("Changed to pattern 4."); break; }
+            case 'b': { n = 14; sendResponse("Changed to pattern 14."); break; }
+            case 'c': { n = 24; sendResponse("Changed to pattern 24."); break; }
+            case 'd': { n = 34; sendResponse("Changed to pattern 34."); break; }
+          }
+          strip.ActivePattern = (pattern)n;
+          break;
+        }
+        case '5': {
+          uint8_t n;
+          switch (mode) {
+            case 'a': { n = 5; strip.Pattern5(3); sendResponse("Changed to pattern 5."); break; }
+            case 'b': { n = 15; sendResponse("Changed to pattern 15."); break; }
+            case 'c': { n = 25; sendResponse("Changed to pattern 25."); break; }
+            case 'd': { n = 35; sendResponse("Changed to pattern 35."); break; }
+          }
+          strip.ActivePattern = (pattern)n;
+          break;
+        }
+        case '6': {
+          uint8_t n;
+          switch (mode) {
+            case 'a': { n = 6; strip.Pattern6(3); sendResponse("Changed to pattern 6."); break; }
+            case 'b': { n = 16; sendResponse("Changed to pattern 16."); break; }
+            case 'c': { n = 26; sendResponse("Changed to pattern 26."); break; }
+            case 'd': { n = 36; sendResponse("Changed to pattern 36."); break; }
+          }
+          strip.ActivePattern = (pattern)n;
+          break;
+        }
+        case '7': {
+          uint8_t n;
+          switch (mode) {
+            case 'a': { n = 7; sendResponse("Changed to pattern 7."); break; }
+            case 'b': { n = 17; sendResponse("Changed to pattern 17."); break; }
+            case 'c': { n = 27; sendResponse("Changed to pattern 27."); break; }
+            case 'd': { n = 37; sendResponse("Changed to pattern 37."); break; }
+          }
+          strip.ActivePattern = (pattern)n;
+          break;
+        }
+        case '8': {
+          uint8_t n;
+          switch (mode) {
+            case 'a': { n = 8; sendResponse("Changed to pattern 8."); break; }
+            case 'b': { n = 18; sendResponse("Changed to pattern 18."); break; }
+            case 'c': { n = 28; sendResponse("Changed to pattern 28."); break; }
+            case 'd': { n = 38; sendResponse("Changed to pattern 38."); break; }
+          }
+          strip.ActivePattern = (pattern)n;
+          break;
+        }
+        case '9': {
+          uint8_t n;
+          switch (mode) {
+            case 'a': { n = 9; sendResponse("Changed to pattern 9."); break; }
+            case 'b': { n = 19; sendResponse("Changed to pattern 19."); break; }
+            case 'c': { n = 29; sendResponse("Changed to pattern 29."); break; }
+            case 'd': { n = 39; sendResponse("Changed to pattern 39."); break; }
+          }
+          strip.ActivePattern = (pattern)n;
+          break;
+        }
       }
     }
   }
@@ -1141,7 +1405,9 @@ void loop() {
 // Strip completion callback
 void StripComplete()
 {
-  strip.Reverse();
+  if (strip.ReverseWhenComplete) {
+    strip.Reverse();
+  }
 }
 
 //a quick shortening of the random color function, just to reduce the pattern function calls more readable
